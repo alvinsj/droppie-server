@@ -96,7 +96,7 @@ def print_folders( root )
   raise Sinatra::NotFound if root.nil?
   Dir.glob("#{root}/*").map do|filename|
     { :folder_id => filename, 
-      :name => File.basename(filename)
+      :name => File.basename(filename),
       :type => (File.directory?(filename) ? "d" : "f" )}
   end 
 end
