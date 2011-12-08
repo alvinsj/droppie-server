@@ -8,7 +8,7 @@ before /\/api\/v1\/*/ do
   content_type :json
   raise Sinatra::NotFound if params[:u].nil? or params[:k].nil?
   
-  raise Sinatra::NotFound unless params[:u]=="alvin" || params[:k]=="beer"
+  raise Sinatra::NotFound unless params[:u]=="alvin" && params[:k]=="beer"
 end
 
 # login
@@ -107,7 +107,7 @@ def validate_id( folder_id, test=true )
   if folder_id.nil? || 
     folder_id.empty? || 
     folder_id =~ /^\/.*/ || #/
-    folder_id =~ /\.\./  #..
+    folder_id =~ /\.\./  || #.. prevent store/../
     !(folder_id =~ /^store.*/ )
     false
   else
