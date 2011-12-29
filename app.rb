@@ -101,23 +101,18 @@ def print_folders( root )
   end 
 end
 
+
+STORE_DIRECTORY = 'store'
+STORE_BASEPATH = File.join(File.dirname(File.realpath(__FILE__)), STORE_DIRECTORY)
+
 # validate folder_id
-def validate_id( folder_id, test=true )
- 
-  if folder_id.nil? || 
-    folder_id.empty? || 
-    folder_id =~ /^\/.*/ || #/
-    folder_id =~ /\.\./  || #.. prevent store/../
-    !(folder_id =~ /^store.*/ )
-    false
-  else
-    
-    begin
-      f = File.open(folder_id,"r")
-    rescue
-      return false
-    end if test
-    
-    true
+def validate_id(folder_id, check_existence = true)
+  return false if folder_id.nil? || folder_id.empty?
+  target_path = File.realdirpath(folder_id)
+  return false unless target_path.start_with?(STORE_BASEPATH)
+
+  if check_existence
+    return false unless File.exists?(target_path)
   end
+  true
 end
