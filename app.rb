@@ -11,12 +11,17 @@ before /\/api\/v1\/*/ do
   raise Sinatra::NotFound unless params[:u]=="alvin" && params[:k]=="beer"
 
   @jsonp_callback = params[:callback]
-  @jsonp_callback.gsub!(/[^\w]/, "") if @jsonp_callback
 end
 
 def rp(retval)
   out = retval.to_json
-  @jsonp_callback ? "#{@jsonp_callback}(#{out});" : out
+  
+  if @jsonp_callback 
+    content_type "application/javascript"
+    "#{@jsonp_callback}(#{out});"
+  else
+    out
+  end
 end
 
 
