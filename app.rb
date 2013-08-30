@@ -5,7 +5,7 @@ require 'fileutils'
 
 # "authentication" filter
 before /\/api\/v1\/*/ do
-  content_type :json
+  content_type 'application/json'
   raise Sinatra::NotFound if params[:u].nil? or params[:k].nil?
   
   raise Sinatra::NotFound unless params[:u]=="alvin" && params[:k]=="beer"
