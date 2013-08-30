@@ -17,7 +17,13 @@ end
 
 def rp(retval)
   out = retval.to_json
-  @jsonp_callback ? "#{@jsonp_callback}(#{out});" : out
+  
+  if @jsonp_callback 
+    content_type "application/javascript"
+    "#{@jsonp_callback}(#{out});"
+  else
+    out
+  end
 end
 
 
