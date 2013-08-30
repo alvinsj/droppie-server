@@ -9,11 +9,21 @@ before /\/api\/v1\/*/ do
   raise Sinatra::NotFound if params[:u].nil? or params[:k].nil?
   
   raise Sinatra::NotFound unless params[:u]=="alvin" && params[:k]=="beer"
+
+  @jsonp_callback = params[:callback]
+  @jsonp_callback.gsub!(/[^\w]/, "") if @jsonp_callback
 end
+
+def rp(retval)
+  out = retval.to_json
+  @jsonp_callback ? "#{@jsonp_callback}(#{out});" : out
+end
+
+
 
 # login
 get '/api/v1/login' do
-  {:folders=>print_folders("store") }.to_json
+  rp({:folders => print_folders("store") })
 end
 
 
@@ -22,9 +32,9 @@ get '/api/v1/folder' do
   raise Sinatra::NotFound unless validate_id( params[:folder_id] )
   
   if File.ftype(params[:folder_id]) == "file" 
-    {:error=>"it is a file" }.to_json
+    rp({:error => "it is a file" })
   else
-    {:folders=>print_folders( params[:folder_id] ) }.to_json
+    rp({:folders => print_folders( params[:folder_id] ) })
   end
   
 end
@@ -86,9 +96,9 @@ def respond_with
   begin
     yield
   rescue
-    return {:error=>"Operation failed"}.to_json
+    return rp({:error => "Operation failed"})
   end 
-  {:result => "OK"}.to_json
+  rp({:result => "OK"})
 end
 
 # list folders
