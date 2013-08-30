@@ -16,7 +16,7 @@ end
 
 def rp(retval)
   out = retval.to_json
-  @jsonp_callback ? "#{@jsonp_callback}(#{out})" : out
+  @jsonp_callback ? "#{@jsonp_callback}(#{out});" : out
 end
 
 
