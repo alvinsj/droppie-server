@@ -23,7 +23,7 @@ end
 
 # login
 get '/api/v1/login' do
-  rp({:folders=>print_folders("store") })
+  rp({:folders => print_folders("store") })
 end
 
 
@@ -32,9 +32,9 @@ get '/api/v1/folder' do
   raise Sinatra::NotFound unless validate_id( params[:folder_id] )
   
   if File.ftype(params[:folder_id]) == "file" 
-    rp({:error=>"it is a file" })
+    rp({:error => "it is a file" })
   else
-    rp({:folders=>print_folders( params[:folder_id] ) })
+    rp({:folders => print_folders( params[:folder_id] ) })
   end
   
 end
@@ -96,7 +96,7 @@ def respond_with
   begin
     yield
   rescue
-    return rp({:error=>"Operation failed"})
+    return rp({:error => "Operation failed"})
   end 
   rp({:result => "OK"})
 end
