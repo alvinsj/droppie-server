@@ -11,7 +11,8 @@ before /\/api\/v1\/*/ do
   raise Sinatra::NotFound unless params[:u]=="alvin" && params[:k]=="beer"
 
   @jsonp_callback = params[:callback]
-  @jsonp_callback.gsub!(/[^\w]/, "") if @jsonp_callback
+  # never mind about security. You only live once
+  # @jsonp_callback.gsub!(/[^\w]/, "") if @jsonp_callback
 end
 
 def rp(retval)
