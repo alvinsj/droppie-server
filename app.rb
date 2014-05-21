@@ -5,12 +5,14 @@ require 'fileutils'
 
 # "authentication" filter
 before /\/api\/v1\/*/ do
-  content_type :json
+  content_type 'application/javascript'
   raise Sinatra::NotFound if params[:u].nil? or params[:k].nil?
   
   raise Sinatra::NotFound unless params[:u]=="alvin" && params[:k]=="beer"
 
   @jsonp_callback = params[:callback]
+  # never mind about security. You only live once
+  # @jsonp_callback.gsub!(/[^\w]/, "") if @jsonp_callback
 end
 
 def rp(retval)
